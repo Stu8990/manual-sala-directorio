@@ -741,19 +741,10 @@ img {
         font-size: 1rem;
     }
 
-    /* Botones de acceso rápido en columna */
-    .quick-buttons {
-        grid-template-columns: 1fr;
-    }
-
-    /* En móvil, cuando están sticky, ocultarlos (usaremos el botón flotante) */
-    .quick-access.sticky {
-        display: none !important;
-    }
-
-    /* En móvil, mostrar el quick-access normal al inicio */
+    /* En móvil, OCULTAR completamente el quick-access */
+    /* Usaremos solo el menú flotante para ahorrar espacio */
     .quick-access {
-        position: relative;  /* Cancelar sticky en móvil */
+        display: none !important;  /* Ocultar en móvil siempre */
     }
 
     /* Títulos más pequeños */
@@ -803,6 +794,39 @@ img {
     .anydesk-step img {
         max-width: 100%;         /* Todo el ancho disponible */
         max-height: 280px;       /* Reducir altura */
+    }
+
+    /* Reducir ejemplo de número AnyDesk en móvil */
+    .anydesk-number-example {
+        padding: 15px;           /* Menos padding */
+    }
+
+    .number-display {
+        font-size: 1.2rem;       /* Más pequeño (era 1.5rem) */
+        padding: 8px 15px;       /* Menos padding */
+        letter-spacing: 2px;     /* Menos espaciado */
+    }
+
+    /* Badges de AnyDesk más compactos */
+    .anydesk-badge {
+        padding: 8px 18px;       /* Menos padding */
+        font-size: 1rem;         /* Más pequeño */
+        margin-bottom: 15px;
+    }
+
+    /* Pasos de AnyDesk más compactos */
+    .anydesk-step .step-card {
+        padding: 20px;           /* Menos padding */
+    }
+
+    .anydesk-step h3 {
+        font-size: 1.2rem;       /* Título más pequeño */
+    }
+
+    /* Flecha de flujo más pequeña */
+    .arrow-down {
+        font-size: 2rem;         /* Más pequeña (era 3rem) */
+        padding: 15px 0;         /* Menos espacio */
     }
 
     /* Sección de soporte en móviles */
@@ -860,6 +884,17 @@ img {
     /* Imágenes de AnyDesk en pantallas muy pequeñas */
     .anydesk-step img {
         max-height: 220px;       /* Más pequeñas */
+    }
+
+    /* Reducir AÚN MÁS el ejemplo de número en pantallas muy pequeñas */
+    .anydesk-number-example {
+        padding: 10px;
+    }
+
+    .number-display {
+        font-size: 1rem;         /* Aún más pequeño */
+        padding: 6px 12px;
+        letter-spacing: 1px;
     }
 
     /* Ajustar posición del menú flotante en pantallas muy pequeñas */
