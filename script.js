@@ -7,17 +7,19 @@
 */
 
 // ========================================
-// SMOOTH SCROLL
+// SMOOTH SCROLL CON OFFSET
 // ========================================
 /*
    Cuando el usuario hace clic en un enlace (#como-encender, #problemas, etc.),
-   la página se desplaza suavemente en lugar de saltar bruscamente.
+   la página se desplaza suavemente con un offset para no quedar tapado
+   por el header sticky.
 
    Cómo funciona:
    1. Busca todos los enlaces que empiezan con #
    2. Cuando se hace clic, cancela el comportamiento normal
    3. Encuentra el elemento destino
-   4. Se desplaza suavemente hasta ese elemento
+   4. Calcula la posición con offset para compensar el sticky
+   5. Se desplaza suavemente hasta esa posición
 */
 
 document.querySelectorAll('a[href^="#"]').forEach(function(enlace) {
@@ -31,11 +33,27 @@ document.querySelectorAll('a[href^="#"]').forEach(function(enlace) {
         // Buscar el elemento en la página
         const elemento = document.querySelector(destino);
 
-        // Si existe el elemento, hacer scroll suave
+        // Si existe el elemento, hacer scroll suave con offset
         if (elemento) {
-            elemento.scrollIntoView({
-                behavior: 'smooth',    // Desplazamiento suave
-                block: 'start'         // Alinear al inicio
+            // Calcular offset según si hay sticky o no
+            const quickAccess = document.querySelector('.quick-access');
+            const esMobile = window.innerWidth <= 768;
+
+            let offset = 20; // Offset mínimo por defecto
+
+            // Si hay quick-access sticky en desktop, agregar su altura
+            if (!esMobile && quickAccess && quickAccess.classList.contains('sticky')) {
+                offset = quickAccess.offsetHeight + 20; // Altura del sticky + margen
+            }
+
+            // Obtener posición del elemento
+            const elementPosition = elemento.getBoundingClientRect().top;
+            const offsetPosition = elementPosition + window.scrollY - offset;
+
+            // Scroll suave a la posición calculada
+            window.scrollTo({
+                top: offsetPosition,
+                behavior: 'smooth'
             });
         }
     });

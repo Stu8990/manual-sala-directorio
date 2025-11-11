@@ -978,6 +978,15 @@ img {
    ======================================== */
 html {
     scroll-behavior: smooth;
+    /* Agregar padding para compensar sticky headers */
+    scroll-padding-top: 120px;  /* Espacio extra al hacer scroll */
+}
+
+/* Ajustar scroll-padding en móvil */
+@media (max-width: 768px) {
+    html {
+        scroll-padding-top: 20px;  /* Menos espacio en móvil (no hay sticky) */
+    }
 }
 
 /* ========================================
