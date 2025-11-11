@@ -596,17 +596,26 @@ function boncheFlotante() {
         // Después de la transición, cambiar imagen y fade in
         setTimeout(() => {
             boncheImage.src = nuevaPose;
-            boncheImage.style.opacity = '1';
+
+            // Asegurar que la imagen se cargue antes de hacer fade in
+            boncheImage.onload = function() {
+                boncheImage.style.opacity = '1';
+            };
+
+            // Si hay error al cargar, mostrar en consola y volver a opacidad 1
+            boncheImage.onerror = function() {
+                console.error('Error al cargar imagen:', nuevaPose);
+                boncheImage.style.opacity = '1';
+            };
         }, 300);
     }
 
     // Función pública para cambiar pose por ID de sección
     window.cambiarPoseBonche = function(idSeccion) {
-        if (seccionActual !== idSeccion) {
-            seccionActual = idSeccion;
-            const nuevaPose = posesPorSeccion[idSeccion] || posesPorSeccion['default'];
-            cambiarPose(nuevaPose);
-        }
+        seccionActual = idSeccion;
+        const nuevaPose = posesPorSeccion[idSeccion] || posesPorSeccion['default'];
+        console.log('Cambiando a sección:', idSeccion, 'Pose:', nuevaPose);
+        cambiarPose(nuevaPose);
     };
 
     // Configurar Intersection Observer para detectar sección visible
