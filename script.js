@@ -92,9 +92,13 @@ function crearBotonVolverArriba() {
     const boton = document.createElement('button');
     boton.innerHTML = '↑';
     boton.setAttribute('aria-label', 'Volver arriba');
+    // Ajustar posición según si es móvil o desktop
+    const esMobile = window.innerWidth <= 768;
+    const bottomPosition = esMobile ? '30px' : '30px'; // Mismo para ambos ahora
+
     boton.style.cssText = `
         position: fixed;
-        bottom: 30px;
+        bottom: ${bottomPosition};
         right: 30px;
         background: linear-gradient(135deg, #2E5C8A 0%, #4A90E2 100%);
         color: white;
@@ -193,6 +197,97 @@ function hacerBotonesSticky() {
 
 // Ejecutar cuando la página carga
 hacerBotonesSticky();
+
+// ========================================
+// MENÚ FLOTANTE MÓVIL
+// ========================================
+/*
+   En móviles, muestra un botón flotante con menú desplegable
+   para acceso rápido a las secciones principales.
+
+   Cómo funciona:
+   1. Solo se muestra en móviles (menos de 768px de ancho)
+   2. Aparece cuando haces scroll hacia abajo
+   3. Al tocar el botón, despliega el menú con las 4 opciones
+   4. Al tocar una opción, navega y cierra el menú
+*/
+
+function menuFlotanteMovil() {
+    const floatingBtn = document.getElementById('floatingMenuBtn');
+    const floatingMenu = document.getElementById('floatingMenu');
+    const menuItems = document.querySelectorAll('.floating-menu-item');
+
+    if (!floatingBtn || !floatingMenu) return;
+
+    let menuAbierto = false;
+
+    // Función para mostrar/ocultar el botón según scroll y ancho de pantalla
+    function actualizarVisibilidad() {
+        const esMobile = window.innerWidth <= 768;
+        const scrollY = window.scrollY;
+
+        if (esMobile && scrollY > 300) {
+            // Mostrar en móvil si hay scroll
+            floatingBtn.style.display = 'block';
+            floatingMenu.style.display = 'block';
+        } else {
+            // Ocultar en desktop o si no hay scroll
+            floatingBtn.style.display = 'none';
+            floatingMenu.style.display = 'none';
+            floatingMenu.classList.remove('open');
+            menuAbierto = false;
+        }
+    }
+
+    // Toggle del menú (abrir/cerrar)
+    floatingBtn.addEventListener('click', function(e) {
+        e.stopPropagation(); // Evitar que el click se propague
+
+        if (menuAbierto) {
+            // Cerrar menú
+            floatingMenu.classList.remove('open');
+            floatingBtn.textContent = '⚡ Menú Rápido';
+            menuAbierto = false;
+        } else {
+            // Abrir menú
+            floatingMenu.classList.add('open');
+            floatingBtn.textContent = '✕ Cerrar';
+            menuAbierto = true;
+        }
+    });
+
+    // Cerrar menú al hacer clic en un item
+    menuItems.forEach(function(item) {
+        item.addEventListener('click', function() {
+            floatingMenu.classList.remove('open');
+            floatingBtn.textContent = '⚡ Menú Rápido';
+            menuAbierto = false;
+        });
+    });
+
+    // Cerrar menú si se hace clic fuera de él
+    document.addEventListener('click', function(e) {
+        if (menuAbierto &&
+            !floatingMenu.contains(e.target) &&
+            !floatingBtn.contains(e.target)) {
+            floatingMenu.classList.remove('open');
+            floatingBtn.textContent = '⚡ Menú Rápido';
+            menuAbierto = false;
+        }
+    });
+
+    // Actualizar visibilidad al hacer scroll
+    window.addEventListener('scroll', actualizarVisibilidad);
+
+    // Actualizar visibilidad al cambiar tamaño de ventana
+    window.addEventListener('resize', actualizarVisibilidad);
+
+    // Ejecutar al cargar
+    actualizarVisibilidad();
+}
+
+// Ejecutar cuando la página carga
+menuFlotanteMovil();
 
 // ========================================
 // ANIMACIÓN AL HACER SCROLL
