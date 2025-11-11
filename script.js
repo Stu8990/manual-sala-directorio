@@ -227,13 +227,12 @@ function menuFlotanteMovil() {
         const scrollY = window.scrollY;
 
         if (esMobile && scrollY > 300) {
-            // Mostrar en móvil si hay scroll
+            // Mostrar SOLO el botón en móvil si hay scroll
             floatingBtn.style.display = 'block';
-            floatingMenu.style.display = 'block';
+            // NO mostrar el menú automáticamente, solo cuando se haga clic
         } else {
-            // Ocultar en desktop o si no hay scroll
+            // Ocultar todo en desktop o si no hay scroll
             floatingBtn.style.display = 'none';
-            floatingMenu.style.display = 'none';
             floatingMenu.classList.remove('open');
             menuAbierto = false;
         }
