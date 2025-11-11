@@ -533,6 +533,110 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 // ========================================
+// BONCHE FLOTANTE - CAMBIO DE POSES
+// ========================================
+/*
+   Bonche es la mascota flotante que cambia de pose según
+   la sección en la que estés navegando.
+
+   Cómo funciona:
+   1. Usa Intersection Observer para detectar qué sección está visible
+   2. Cambia la imagen de Bonche según la sección
+   3. Smooth transition entre poses
+
+   Poses de Bonche:
+   - Header/Inicio: hola.png (saludando)
+   - Cómo Encender: pregunta.png (ayudando con dudas)
+   - Videoconferencia: nom_nom.png (disfrutando)
+   - Proyectar Laptop: yum.png (satisfecho, todo funciona)
+   - Problemas: pregunta.png (necesita ayuda)
+   - Soporte: alegria.png (feliz de ayudar)
+*/
+
+function boncheFlotante() {
+    const boncheImage = document.getElementById('boncheImage');
+    const boncheContainer = document.getElementById('boncheFloating');
+
+    if (!boncheImage || !boncheContainer) return;
+
+    // Mapeo de secciones a poses de Bonche
+    const posesPorSeccion = {
+        'header': 'bonche/hola-removebg-preview.png',
+        'como-encender': 'bonche/pregunta-removebg-preview.png',
+        'videoconferencia': 'bonche/nom_nom-removebg-preview.png',
+        'proyectar': 'bonche/yum-removebg-preview.png',
+        'problemas': 'bonche/pregunta-removebg-preview.png',
+        'default': 'bonche/relax-removebg-preview.png'  // Para soporte y otras
+    };
+
+    let seccionActual = 'header';
+
+    // Función para cambiar la pose de Bonche con transición suave
+    function cambiarPose(nuevaPose) {
+        // Fade out
+        boncheImage.style.opacity = '0';
+
+        // Después de la transición, cambiar imagen y fade in
+        setTimeout(() => {
+            boncheImage.src = nuevaPose;
+            boncheImage.style.opacity = '1';
+        }, 300);
+    }
+
+    // Configurar Intersection Observer para detectar sección visible
+    const opciones = {
+        threshold: 0.3,  // 30% de la sección debe ser visible
+        rootMargin: '-100px 0px -100px 0px'  // Margen para activar el cambio
+    };
+
+    // Observar el header
+    const header = document.querySelector('.header');
+    if (header) {
+        const observadorHeader = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting && seccionActual !== 'header') {
+                    seccionActual = 'header';
+                    cambiarPose(posesPorSeccion['header']);
+                }
+            });
+        }, opciones);
+        observadorHeader.observe(header);
+    }
+
+    // Observar las secciones principales
+    const secciones = document.querySelectorAll('section[id]');
+
+    const observadorSecciones = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const idSeccion = entry.target.getAttribute('id');
+
+                if (seccionActual !== idSeccion) {
+                    seccionActual = idSeccion;
+
+                    // Obtener la pose correspondiente o usar default
+                    const nuevaPose = posesPorSeccion[idSeccion] || posesPorSeccion['default'];
+                    cambiarPose(nuevaPose);
+                }
+            }
+        });
+    }, opciones);
+
+    // Observar cada sección
+    secciones.forEach(seccion => {
+        observadorSecciones.observe(seccion);
+    });
+
+    // Mostrar Bonche después de un pequeño delay
+    setTimeout(() => {
+        boncheContainer.style.opacity = '1';
+    }, 500);
+}
+
+// Ejecutar cuando la página carga
+boncheFlotante();
+
+// ========================================
 // FIN DEL SCRIPT
 // ========================================
 

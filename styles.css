@@ -51,7 +51,7 @@ img {
     max-width: 100%;
     height: auto;
     display: block;
-    border-radius: 20px;     /* Bordes redondeados para todas las imágenes */
+    border-radius: 20px !important;     /* Bordes redondeados para TODAS las imágenes - forzado */
 }
 
 /* ========================================
@@ -280,11 +280,12 @@ img {
 .component-simple img {
     margin-bottom: 15px;
     width: 100%;             /* Ocupa todo el ancho del contenedor */
-    height: 220px;           /* Altura fija para uniformidad */
+    height: 180px;           /* Altura reducida para que se vean mejor las horizontales */
     max-width: 100%;
-    object-fit: contain;     /* Contiene la imagen sin recortar - CLAVE para verticales */
+    object-fit: cover;       /* Recorta si es necesario para llenar el espacio */
     background: var(--bg-light);  /* Fondo para espacios vacíos */
-    border-radius: 20px;     /* Bordes más redondeados - menos filosos */
+    border-radius: 20px !important;     /* Bordes más redondeados - FORZADO */
+    overflow: hidden;        /* Asegurar que el border-radius se aplique */
 }
 
 .component-simple h3 {
@@ -727,6 +728,43 @@ img {
 }
 
 /* ========================================
+   BONCHE FLOTANTE - MASCOTA
+   ========================================
+   Mascota flotante que cambia de pose según la sección
+*/
+.bonche-floating {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    width: 180px;           /* Aumentado para que se vean bien las imágenes con círculo */
+    height: 180px;
+    z-index: 997;  /* Debajo del menú flotante */
+    opacity: 0;  /* Comienza invisible, JavaScript lo hace visible */
+    transition: opacity 0.5s ease, transform 0.3s ease;
+    pointer-events: none;  /* No interfiere con clicks */
+    animation: floatBounce 3s ease-in-out infinite;
+}
+
+/* Animación de flotación suave */
+@keyframes floatBounce {
+    0%, 100% {
+        transform: translateY(0px);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+/* La imagen de Bonche */
+.bonche-floating img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    filter: drop-shadow(0 4px 15px rgba(0,0,0,0.2));
+    transition: opacity 0.3s ease;
+}
+
+/* ========================================
    RESPONSIVE - MÓVILES
    ========================================
    Ajustes para pantallas pequeñas
@@ -786,8 +824,8 @@ img {
     }
 
     .component-simple img {
-        height: 180px;           /* Más pequeñas en móvil */
-        object-fit: contain;     /* Mantener proporción */
+        height: 160px;           /* Más pequeñas en móvil */
+        object-fit: cover;       /* Recortar si es necesario */
     }
 
     /* Imágenes de AnyDesk en móviles */
@@ -847,6 +885,14 @@ img {
         font-size: 0.9rem;       /* Texto un poco más pequeño */
         line-height: 1.5;        /* Más espacio entre líneas */
     }
+
+    /* Bonche flotante responsive en móvil */
+    .bonche-floating {
+        width: 130px;            /* Ajustado para que se vean bien las imágenes con círculo */
+        height: 130px;
+        bottom: 120px;           /* Subir para no tapar menú flotante */
+        left: 15px;
+    }
 }
 
 /* Para pantallas MUY pequeñas */
@@ -877,8 +923,8 @@ img {
     }
 
     .component-simple img {
-        height: 150px;           /* Más compactas */
-        object-fit: contain;     /* Mantener proporción */
+        height: 140px;           /* Más compactas */
+        object-fit: cover;       /* Recortar si es necesario */
     }
 
     /* Imágenes de AnyDesk en pantallas muy pequeñas */
@@ -920,6 +966,14 @@ img {
 
     .contact-box a {
         font-size: 0.85rem;      /* Emails más pequeños */
+    }
+
+    /* Bonche flotante en pantallas muy pequeñas */
+    .bonche-floating {
+        width: 100px;            /* Ajustado para que se vean las imágenes con círculo */
+        height: 100px;
+        bottom: 110px;           /* Ajustar posición */
+        left: 10px;
     }
 }
 
