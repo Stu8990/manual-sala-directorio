@@ -30,6 +30,14 @@ document.querySelectorAll('a[href^="#"]').forEach(function(enlace) {
         // Obtener el ID del destino (ej: "#como-encender")
         const destino = this.getAttribute('href');
 
+        // Cambiar pose de Bonche inmediatamente al hacer clic
+        if (destino && destino.startsWith('#')) {
+            const idSeccion = destino.substring(1); // Remover el #
+            if (typeof window.cambiarPoseBonche === 'function') {
+                window.cambiarPoseBonche(idSeccion);
+            }
+        }
+
         // Buscar el elemento en la página
         const elemento = document.querySelector(destino);
 
@@ -282,12 +290,21 @@ function menuFlotanteMovil() {
         }
     });
 
-    // Cerrar menú al hacer clic en un item
+    // Cerrar menú al hacer clic en un item y cambiar pose de Bonche
     menuItems.forEach(function(item) {
         item.addEventListener('click', function() {
             floatingMenu.classList.remove('open');
             floatingBtn.textContent = '⚡ Menú Rápido';
             menuAbierto = false;
+
+            // Cambiar pose de Bonche según la sección clickeada
+            const href = this.getAttribute('href');
+            if (href && href.startsWith('#')) {
+                const idSeccion = href.substring(1); // Remover el #
+                if (typeof window.cambiarPoseBonche === 'function') {
+                    window.cambiarPoseBonche(idSeccion);
+                }
+            }
         });
     });
 
@@ -582,6 +599,15 @@ function boncheFlotante() {
             boncheImage.style.opacity = '1';
         }, 300);
     }
+
+    // Función pública para cambiar pose por ID de sección
+    window.cambiarPoseBonche = function(idSeccion) {
+        if (seccionActual !== idSeccion) {
+            seccionActual = idSeccion;
+            const nuevaPose = posesPorSeccion[idSeccion] || posesPorSeccion['default'];
+            cambiarPose(nuevaPose);
+        }
+    };
 
     // Configurar Intersection Observer para detectar sección visible
     const opciones = {
