@@ -692,6 +692,8 @@ img {
     background: var(--bg-light);
     padding: 25px;
     border-radius: 10px;
+    overflow-wrap: break-word;   /* Romper palabras largas */
+    word-break: break-word;      /* Compatibilidad */
 }
 
 .contact-box h3 {
@@ -704,6 +706,10 @@ img {
     text-decoration: underline;
     display: block;
     margin: 8px 0;
+    word-wrap: break-word;       /* Romper emails largos */
+    overflow-wrap: break-word;   /* Estándar moderno */
+    word-break: break-word;      /* Forzar ruptura */
+    max-width: 100%;             /* No exceder el contenedor */
 }
 
 .contact-box a:hover {
@@ -798,6 +804,25 @@ img {
         max-width: 100%;         /* Todo el ancho disponible */
         max-height: 280px;       /* Reducir altura */
     }
+
+    /* Sección de soporte en móviles */
+    .support-box {
+        padding: 25px 15px;      /* Menos padding lateral */
+    }
+
+    .contacts {
+        grid-template-columns: 1fr;  /* Una columna en móvil */
+    }
+
+    .contact-box {
+        padding: 20px 15px;      /* Menos padding */
+        text-align: left;        /* Alinear a la izquierda */
+    }
+
+    .contact-box a {
+        font-size: 0.9rem;       /* Texto un poco más pequeño */
+        line-height: 1.5;        /* Más espacio entre líneas */
+    }
 }
 
 /* Para pantallas MUY pequeñas */
@@ -848,6 +873,19 @@ img {
         bottom: 150px;
         right: 15px;
     }
+
+    /* Sección de soporte en pantallas muy pequeñas */
+    .support-box {
+        padding: 20px 10px;      /* Padding mínimo */
+    }
+
+    .contact-box {
+        padding: 15px 10px;      /* Aún más compacto */
+    }
+
+    .contact-box a {
+        font-size: 0.85rem;      /* Emails más pequeños */
+    }
 }
 
 /* ========================================
@@ -879,7 +917,7 @@ img {
 
 /* Menú desplegable */
 .floating-menu {
-    display: none;  /* Oculto por defecto (desktop) */
+    display: none;  /* COMPLETAMENTE oculto por defecto */
     position: fixed;
     bottom: 160px;
     right: 20px;
@@ -891,13 +929,16 @@ img {
     /* Animación de entrada */
     opacity: 0;
     transform: translateY(20px);
-    transition: all 0.3s ease;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    pointer-events: none;  /* No clickeable cuando está cerrado */
 }
 
 /* Cuando el menú está abierto */
 .floating-menu.open {
+    display: block;          /* Mostrar cuando está abierto */
     opacity: 1;
     transform: translateY(0);
+    pointer-events: auto;    /* Hacer clickeable cuando está abierto */
 }
 
 /* Botones dentro del menú flotante */
