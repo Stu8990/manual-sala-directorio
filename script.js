@@ -440,9 +440,9 @@ function habilitarCopiarContrasena() {
             // Copiar al portapapeles
             navigator.clipboard.writeText(password).then(function() {
                 // Mostrar mensaje de éxito
-                const mensajeOriginal = passwordElement.textContent;
-                passwordElement.textContent = '✓ Copiado!';
-                passwordElement.style.background = '#27AE60';
+                // const mensajeOriginal = passwordElement.textContent;
+                // passwordElement.textContent = '✓ Copiado!';
+                // passwordElement.style.background = '#27AE60';
 
                 // Volver al estado original después de 2 segundos
                 setTimeout(function() {
